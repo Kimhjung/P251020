@@ -7,42 +7,45 @@
 
 using namespace std;
 
-int main()
+class Singleton
 {
-
-	ifstream Map("Level01.map");
-
-	cout << "¸Ê ·Îµå" << endl;
-
-	if (Map.is_open())
+protected:
+	Singleton()
 	{
-		char Buffer[1024] = { 0, };
-		int Y = 0;
-		/*
-		Map.getline(Buffer, 255);
-		cout << Buffer << endl;
-		*/
-		while (Map.getline(Buffer, 80))
+
+	}
+	
+public:
+	static Singleton* GetInstance()
+	{
+		if (Instance == nullptr)
 		{
-			Y++;
-			string Line = Buffer;
-			for(int X = 0; X < Line.size(); ++X)
-			{
-				if (Line[X] == '\0')
-				{
-					continue;
-				}
-				cout << Line[X];
-			}
-			cout << endl;
-			Y++;
+			Instance = new Singleton;
 		}
+		return Instance;
 	}
-	else
-	{
-		cout << "¸Ê ·Îµå ¾ÈµÊ";
-	}
-	Map.close();
+
+protected:
+	static Singleton* Instance;
+	
+};
+
+Singleton* Singleton::Instance = nullptr;
+
+int main(int argc, char* argv[])
+{
+	Singleton* S1 = Singleton::GetInstance();
+
+	FEngine* MyEngine = new FEngine();
+
+	GEngine = MyEngine;
+
+	MyEngine->Init();
+	MyEngine->Run();
+	MyEngine->Term();
+
+	delete MyEngine;
+	MyEngine = nullptr;
 
 	return 0;
 }

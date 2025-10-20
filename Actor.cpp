@@ -1,19 +1,33 @@
-#include "Actor.h"
 #include <iostream>
+#include <windows.h>
+
+#include "Actor.h"
 
 using namespace std;
 
-AActor::AActor()
+AActor::AActor() :
+	Shape(' '), Location(0, 0)
 {
-	cout << "Actor 持失切" << endl;
+	
 }
 
 AActor::~AActor()
 {
-	cout << "Actor 社瑚切" << endl;
+	
 }
 
 void AActor::Tick()
 {
-	cout << "Actor Tick" << endl;
+	
+}
+
+void AActor::Render()
+{
+	COORD Position;
+	Position.X = Location.X;
+	Position.Y = Location.Y;
+
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Position);
+	
+	std::cout << Shape;
 }

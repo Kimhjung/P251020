@@ -1,7 +1,7 @@
 #pragma once
 #include "Actor.h"
 
-class AWall
+class AWall : public AActor
 {
 public:
 	AWall();

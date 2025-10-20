@@ -72,9 +72,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Level01.map">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
 </Project>

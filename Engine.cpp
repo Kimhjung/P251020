@@ -1,14 +1,25 @@
 #include<iostream>
+#include <fstream>
+#include <string>
+#include<conio.h>
 
 #include "Engine.h"
 
+#include "World.h"
+#include "Wall.h"
+#include "Floor.h"
+#include "Player.h"
+#include "Goal.h"
+#include "Monster.h"
+
 using namespace std;
 
-  
+FEngine* GEngine = nullptr;
 
-FEngine::FEngine()
+FEngine::FEngine() : 
+	World(nullptr)
 {
-
+	
 }
 
 FEngine::~FEngine()
@@ -18,7 +29,62 @@ FEngine::~FEngine()
 
 void FEngine::Init()
 {
+	World = new UWorld();
 
+	std::ifstream Map("Level01.map");
+
+	if (Map.is_open())
+	{
+		cout << "¸Ê ·Îµå" << endl;
+
+		char Buffer[1024] = { 0, };
+		int Y = 0;
+		while (Map.getline(Buffer, 80))
+		{
+			string Line = Buffer;
+			for (int X = 0; X < Line.size(); ++X)
+			{
+				if (Line[X] == '*')
+				{
+					AActor* NewActor = new AWall();
+					NewActor->SetActorLocation(FVector2D(X, Y));
+					NewActor->SetShape(Line[X]);
+					World->SpawnActor(NewActor);
+				}
+				else if (Line[X] == 'P')
+				{
+					AActor* NewActor = new APlayer();
+					NewActor->SetActorLocation(FVector2D(X, Y));
+					NewActor->SetShape(Line[X]);
+					World->SpawnActor(NewActor);
+				}
+				else if (Line[X] == 'M')
+				{
+					AActor* NewActor = new AMonster();
+					NewActor->SetActorLocation(FVector2D(X, Y));
+					NewActor->SetShape(Line[X]);
+					World->SpawnActor(NewActor);
+				}
+				else if (Line[X] == 'G')
+				{
+					AActor* NewActor = new AGoal();
+					NewActor->SetActorLocation(FVector2D(X, Y));
+					NewActor->SetShape(Line[X]);
+					World->SpawnActor(NewActor);
+				}
+				cout << Line[X];
+			}
+			cout << endl;
+			Y++;
+		}
+	}
+	else
+	{
+		cout << "¸Ê ·Îµå ¾ÈµÊ";
+	}
+	Map.close();
+
+	
 }
 
 void FEngine::Run()
@@ -38,13 +104,16 @@ void FEngine::Term()
 
 void FEngine::Input()
 {
-
+	int KeyCode = _getch();
 }
+
 void FEngine::Tick()
 {
-
+	GetWorld()->Tick();
 }
+
 void FEngine::Render()
 {
-
+	system("cls");
+	GetWorld()->Render();
 }
