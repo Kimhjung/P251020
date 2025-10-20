@@ -4,8 +4,11 @@ class UWorld;
 
 class FEngine
 {
-public:
+protected:
 	FEngine();
+
+
+public:
 	virtual ~FEngine();
 
 	//virtual: 니 엔진 만들 때 가져다 쓰셈
@@ -23,7 +26,6 @@ public:
 	{
 		return KeyCode;
 	}
-	
 
 protected:
 	void Input();
@@ -36,6 +38,20 @@ protected:
 
 	int KeyCode = 0;
 
+public:
+	static FEngine* GetInstance()
+	{
+		if (Instance == nullptr)
+		{
+			Instance = new FEngine();
+		}
+		return Instance;
+	}
+
+protected:
+	static FEngine* Instance;
 };
 
-extern FEngine* GEngine;
+//extern FEngine* GEngine;
+
+#define GEngine FEngine::GetInstance()

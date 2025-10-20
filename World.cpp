@@ -18,7 +18,9 @@ std::vector<AActor*> UWorld::GetAllActors() const
 
 AActor* UWorld::SpawnActor(AActor* NewActor)
 {
-	return nullptr;
+	Actors.push_back(NewActor);
+
+	return NewActor;
 }
 
 void UWorld::Tick()

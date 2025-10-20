@@ -39,8 +39,11 @@ public:
 		Shape = Value;
 	}
 
-private:
+	int ZOrder;
+
+protected:
 	FVector2D Location;
 	char Shape;
+	
 };
 
