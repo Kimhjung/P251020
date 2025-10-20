@@ -28,7 +28,18 @@ public:
 
 	}
 
+	__forceinline char GetShape()
+	{
+		return Shape;
+	}
+
+	void SetShape(char Value)
+	{
+		Shape = Value;
+	}
+
 private:
 	FVector2D Location;
+	char Shape;
 };
 

@@ -1,11 +1,11 @@
 #include "Monster.h"
 
-Monster::AMonster()
+AMonster::AMonster()
 {
 
 }
 
-Monster::~AMonster()
+AMonster::~AMonster()
 {
 
 }
