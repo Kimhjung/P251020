@@ -1,16 +1,21 @@
 #include <iostream>
-#include "Actor.h"
-#include "Player.h"
+#include <vector>	//STL 찾아보기
+
+#include "Engine.h"
+
 
 using namespace std;
 
 int main()
 {
-	APlayer* MyPlayer = new APlayer();
+	FEngine* MyEngine = new FEngine();
+	
+	MyEngine->Init();
+	MyEngine->Run();
+	MyEngine->Term();
 
-	MyPlayer->Tick();
-
-	delete MyPlayer;
+	delete MyEngine;
+	MyEngine = nullptr;
 
 	return 0;
 }
