@@ -31,3 +31,22 @@ void AActor::Render()
 	
 	std::cout << Shape;
 }
+
+bool AActor::CheckColision(const AActor* Other)
+{
+	if (Other->bIsOverlap)
+	{
+		return true;
+	}
+
+
+	return false;
+}
+
+void AActor::ActorBeginOverlap()
+{
+}
+
+void AActor::Hit()
+{
+}

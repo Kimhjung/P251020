@@ -10,7 +10,7 @@ public:
 	virtual ~UWorld();
 
 	// 모든 액터 가져오기
-	std::vector<AActor*> GetAllActors() const;
+	void GetAllActors(std::vector<AActor*>& OutActors) const;
 
 	AActor* SpawnActor(AActor* NewActor);
 

@@ -45,8 +45,7 @@ void FEngine::Init()
 
 		while (Map.getline(Buffer, 80))
 		{
-
-			std::string Line = Buffer;
+			string Line = Buffer;
 			for (int X = 0; X < Line.size(); ++X)
 			{
 				if (Line[X] == '*')
@@ -99,6 +98,7 @@ void FEngine::Init()
 
 	Map.close();
 
+	World->SortActor();
 }
 
 
@@ -129,7 +129,7 @@ void FEngine::Tick()
 
 void FEngine::Render()
 {
-	system("cls");
+	//system("cls");
 
 	GetWorld()->Render();
 }
