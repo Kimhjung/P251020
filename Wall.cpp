@@ -1,12 +1,18 @@
 #include "Wall.h"
+#include "PaperFilpbookComponent.h"
 
 AWall::AWall()
 {
-	ZOrder = 1;
 	bIsCollision = true;
 	bIsOverlap = false;
 
-	Color = { 128, 128, 128, 0 };
+	UPaperFilpbookComponent* Paper = new UPaperFilpbookComponent();
+
+	Paper->SetShape('*');
+	Paper->SetOwner(this);
+	Paper->ZOrder = 1;
+	Paper->Color = { 128, 128, 128, 0 };
+	AddComponent(Paper);
 }
 
 AWall::~AWall()

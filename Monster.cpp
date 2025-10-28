@@ -3,15 +3,22 @@
 #include "Actor.h"
 #include "World.h"
 #include <vector>
+#include "PaperFilpbookComponent.h"
 
 using namespace std;
 
 AMonster::AMonster()
 {
-	ZOrder = 3;
 	bIsCollision = true;
 	bIsOverlap = true;
-	Color = { 255, 0, 0, 0 };
+
+	UPaperFilpbookComponent* Paper = new UPaperFilpbookComponent();
+
+	Paper->SetShape('M');
+	Paper->SetOwner(this);
+	Paper->ZOrder = 3;
+	Paper->Color = { 255, 0, 0, 0 };
+	AddComponent(Paper);
 }
 
 AMonster::~AMonster()
@@ -21,6 +28,13 @@ AMonster::~AMonster()
 
 void AMonster::Tick()
 {
+	TotalTime += (float)GEngine->GetWorldDeltaSeconds();
+	if (TotalTime < ExecuteTime)
+	{
+		return;
+	}
+	TotalTime = 0.0f;
+
 	int KeyCode = rand() % 4;
 
 	FVector2D SaveLocation;
@@ -51,7 +65,7 @@ void AMonster::Tick()
 
 	for (auto OtherActor : AllActors)
 	{
-		if (CheckCollision(OtherActor) && this != OtherActor)
+		if (CheckCollision(OtherActor))	// && this != OtherActor)
 		{
 			bFlag = true;
 			break;

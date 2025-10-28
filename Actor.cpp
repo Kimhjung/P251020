@@ -3,18 +3,22 @@
 
 #include <iostream>
 #include <windows.h>
+#include "Component.h"
 
 using namespace std;
 
 AActor::AActor() :
-	Shape(' '), Location(0, 0)
+	Location(0, 0)
 {
 	
 }
 
 AActor::~AActor()
 {
-	
+	for (auto Components : Components)
+	{
+		delete Components;
+	}
 }
 
 void AActor::Tick()
@@ -24,28 +28,6 @@ void AActor::Tick()
 
 void AActor::Render()
 {
-	COORD Position;
-	Position.X = Location.X;
-	Position.Y = Location.Y;
-
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Position);
-	
-	std::cout << Shape;
-
-	SDL_SetRenderDrawColor(GEngine->MyRenderer, Color.r, Color.g, Color.b, Color.a);
-	//SDL_RenderDrawPoint(GEngine->MyRenderer, Position.X, Position.Y);
-
-	int SizeX = 30;
-	int SizeY = 30;
-
-	SDL_FRect DrawRect =
-	{
-		(float)(Location.X * SizeX),
-		(float)(Location.Y * SizeY),
-		(float)SizeX,
-		(float)SizeY
-	};
-	SDL_RenderFillRect(GEngine->MyRenderer, &DrawRect);
 }
 
 bool AActor::CheckCollision(const AActor* Other)
@@ -70,4 +52,9 @@ void AActor::ActorBeginOverlap()
 
 void AActor::Hit()
 {
+}
+
+void AActor::AddComponent(UComponent* InComponent)
+{
+	Components.push_back(InComponent);
 }

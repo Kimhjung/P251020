@@ -1,7 +1,11 @@
 #pragma once
 
+#include <vector>
 #include "Vector.h"
 #include "SDL3/SDL.h"
+#include "Component.h"
+
+class UComponent;
 
 class AActor
 {
@@ -29,36 +33,21 @@ public:
 		Location.Y = Value.Y;
 
 	}
-
-	__forceinline char GetShape()
-	{
-		return Shape;
-	}
-
-	void SetShape(char Value)
-	{
-		Shape = Value;
-	}
-	__forceinline int GetZOrder() const
-	{
-		return ZOrder;
-	}
-
 	//virtual void SimulatePhysics();
 	bool CheckCollision(const AActor* Other);
 
 	virtual void ActorBeginOverlap();
 	virtual void Hit();
 
+	void AddComponent(UComponent* InComponent);
+
+	std::vector<class UComponent*> Components;
+
 protected:
 	FVector2D Location;
-	char Shape;
-	int ZOrder;
 
 public:
 	bool bIsCollision = false;
 	bool bIsOverlap = true;
-
-	SDL_Color Color = { 255, 255, 255, 255 };
 };
 

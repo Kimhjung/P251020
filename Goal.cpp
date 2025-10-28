@@ -1,9 +1,15 @@
 #include "Goal.h"
+#include "PaperFilpbookComponent.h"
 
 AGoal::AGoal()
 {
-	ZOrder = 2;
-	Color = { 255, 255, 0, 0 };
+	UPaperFilpbookComponent* Paper = new UPaperFilpbookComponent();
+
+	Paper->SetShape('G');
+	Paper->SetOwner(this);
+	Paper->ZOrder = 2;
+	Paper->Color = { 255, 255, 0, 0 };
+	AddComponent(Paper);
 }
 
 AGoal::~AGoal()

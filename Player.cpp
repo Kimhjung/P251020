@@ -2,15 +2,23 @@
 #include "Player.h"
 #include "World.h"
 #include <iostream>
+#include "SDL3/SDL.h"
+#include "PaperFilpbookComponent.h"
 
 using namespace std;
 
 APlayer::APlayer()
 {
-	ZOrder = 3;
 	bIsCollision = true;
 	bIsOverlap = true;
-	Color = { 0, 0, 255, 0 };
+
+	UPaperFilpbookComponent* Paper = new UPaperFilpbookComponent();
+
+	Paper->SetShape('P');
+	Paper->SetOwner(this);
+	Paper->ZOrder = 3;
+	Paper->Color = { 0, 0, 255, 0 };
+	AddComponent(Paper);
 }
 
 APlayer::~APlayer()
@@ -30,21 +38,26 @@ void APlayer::Tick()
 	FVector2D SaveLocation;
 	SaveLocation = Location;
 
-	if (KeyCode == 'w' || KeyCode == 'W')
+	if (KeyCode == SDLK_w || KeyCode == SDLK_UP)
 	{
 		Location.Y--;
 	}
-	if (KeyCode == 's' || KeyCode == 'S')
+	if (KeyCode == SDLK_s || KeyCode == SDLK_DOWN)
 	{
 		Location.Y++;
 	}
-	if (KeyCode == 'a' || KeyCode == 'A')
+	if (KeyCode == SDLK_a || KeyCode == SDLK_LEFT)
 	{
 		Location.X--;
 	}
-	if (KeyCode == 'd' || KeyCode == 'D')
+	if (KeyCode == SDLK_d || KeyCode == SDLK_RIGHT)
 	{
 		Location.X++;
+	}
+
+	if (KeyCode == SDLK_ESCAPE)
+	{
+		exit(-1);
 	}
 
 	vector<AActor*> AllActors;

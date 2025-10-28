@@ -38,7 +38,7 @@ void AGameMode::Tick()
 		{
 			if (Player->GetActorLocation() == Actor->GetActorLocation())
 			{
-				exit(-1);
+				//exit(-1);
 				break;
 			}
 		}
@@ -50,7 +50,7 @@ void AGameMode::Tick()
 		{
 			if (Player->GetActorLocation() == Actor->GetActorLocation())
 			{
-				exit(-1);
+				//exit(-1);
 				break;
 			}
 		}

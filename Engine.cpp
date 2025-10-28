@@ -14,19 +14,20 @@
 #include "Monster.h"
 #include "GameMode.h"
 #include "Timer.h"
+#include "Input.h"
 
-using namespace std;
+//using namespace std;
 
 //FEngine* GEngine = nullptr;
 
 FEngine* FEngine::Instance = nullptr;
 
-FEngine::FEngine() : World(nullptr)
+FEngine::FEngine() : World(nullptr), MyEvent(SDL_Event())
 {
 	MyRenderer = nullptr;
 	MyWindow = nullptr;
 	Timer = new UTimer();
-	MyEvent = SDL_Event();
+	InputDevice = new UInput();
 }
 
 FEngine::~FEngine()
@@ -39,14 +40,18 @@ FEngine::~FEngine()
 	{
 		delete Timer;
 	}
+
+	if (InputDevice)
+	{
+		delete InputDevice;
+	}
 }
 
 void FEngine::Init()
 {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
-	MyWindow = SDL_CreateWindow("Game", 640, 480, SDL_WINDOW_OPENGL);
-
+	MyWindow = SDL_CreateWindow("GameEngine", 640, 480, SDL_WINDOW_OPENGL);
 	MyRenderer = SDL_CreateRenderer(MyWindow, nullptr);
 
 	OpenLevel();
@@ -63,66 +68,67 @@ void FEngine::OpenLevel()
 
 	if (Map.is_open())
 	{
-		cout << "맵 로드" << endl;
-
-		char Buffer[1024] = { 0 };
+		char Buffer[1024] = { 0, };
 		int Y = 0;
 
 		while (Map.getline(Buffer, 80))
 		{
-			string Line = Buffer;
+			std::string Line = Buffer;
 			for (int X = 0; X < Line.size(); ++X)
 			{
 				if (Line[X] == '*')
 				{
 					AActor* Wall = new AWall();
 					Wall->SetActorLocation(FVector2D(X, Y));
-					Wall->SetShape(Line[X]);
+					//Wall->SetShape(Line[X]);
 					World->SpawnActor(Wall);
 				}
 				else if (Line[X] == 'P')
 				{
 					AActor* Player = new APlayer();
 					Player->SetActorLocation(FVector2D(X, Y));
-					Player->SetShape(Line[X]);
+					//Player->SetShape(Line[X]);
 					World->SpawnActor(Player);
 				}
 				else if (Line[X] == 'M')
 				{
 					AActor* Monster = new AMonster();
 					Monster->SetActorLocation(FVector2D(X, Y));
-					Monster->SetShape(Line[X]);
+					//Monster->SetShape(Line[X]);
 					World->SpawnActor(Monster);
 				}
 				else if (Line[X] == 'G')
 				{
 					AActor* Goal = new AGoal();
 					Goal->SetActorLocation(FVector2D(X, Y));
-					Goal->SetShape(Line[X]);
+					//Goal->SetShape(Line[X]);
 					World->SpawnActor(Goal);
 				}
 				else if (Line[X] == ' ')
 				{
 					AActor* Floor = new AFloor();
 					Floor->SetActorLocation(FVector2D(X, Y));
-					Floor->SetShape(Line[X]);
+					//Floor->SetShape(Line[X]);
 					World->SpawnActor(Floor);
 				}
 			}
 			Y++;
 
-			//문제: ZOrder 값에 따라 숫자가 높은 애가 맨 위에 보이게 해라
-			World->SortActor();
+			
 		}
 	}
 	else
 	{
-		cout << "맵 로드 안됨";
+		std::cout << "맵 로드 안됨";
 	}
 
 	Map.close();
 
 	World->SortActor();
+
+	//UE Gameplay Framework
+	//빠져있었음
+	World->SpawnActor(new AGameMode());
 }
 
 
@@ -131,11 +137,21 @@ void FEngine::Run()
 	while (bIsRunning)
 	{
 		Timer->Tick();
+
 		//첫프레임은 0으로 초기화
-		float StartTime = SDL_GetTicks64();
-		DeltaSeconds = SDL_GetTicks64() - StartTime;
-		//Input();
-		SDL_PollEvent(&MyEvent);
+		/*float StartTime = SDL_GetTicks64();
+		DeltaSeconds = SDL_GetTicks64() - StartTime;*/
+		if (SDL_PollEvent(&MyEvent))
+		{
+			switch (MyEvent.type)
+			{
+			case SDL_QUIT:
+				bIsRunning = false;
+				break;
+			}
+		}
+
+		Input();
 		Tick();
 		Render();
 	}
@@ -152,10 +168,11 @@ void FEngine::Term()
 
 void FEngine::Input()
 {
-	if (_kbhit())
+	InputDevice->Tick();
+	/*if (_kbhit())
 	{
-		KeyCode = _getch();
-	}
+		UInput::KeyCode = _getch();
+	}*/
 }
 
 void FEngine::Tick()
