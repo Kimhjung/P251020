@@ -8,8 +8,9 @@ using namespace std;
 APlayer::APlayer()
 {
 	ZOrder = 3;
-	bIsColision = true;
+	bIsCollision = true;
 	bIsOverlap = true;
+	Color = { 0, 0, 255, 0 };
 }
 
 APlayer::~APlayer()
@@ -54,7 +55,7 @@ void APlayer::Tick()
 
 	for (auto OtherActor : AllActors)
 	{
-		if (CheckColision(OtherActor))
+		if (CheckCollision(OtherActor))
 		{
 			bFlag = true;
 			break;

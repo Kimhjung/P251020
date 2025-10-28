@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector.h"
+#include "SDL3/SDL.h"
 
 class AActor
 {
@@ -44,7 +45,7 @@ public:
 	}
 
 	//virtual void SimulatePhysics();
-	bool CheckColision(const AActor* Other);
+	bool CheckCollision(const AActor* Other);
 
 	virtual void ActorBeginOverlap();
 	virtual void Hit();
@@ -55,7 +56,9 @@ protected:
 	int ZOrder;
 
 public:
-	bool bIsColision = false;
+	bool bIsCollision = false;
 	bool bIsOverlap = true;
+
+	SDL_Color Color = { 255, 255, 255, 255 };
 };
 

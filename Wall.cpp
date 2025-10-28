@@ -3,8 +3,10 @@
 AWall::AWall()
 {
 	ZOrder = 1;
-	bIsColision = true;
+	bIsCollision = true;
 	bIsOverlap = false;
+
+	Color = { 128, 128, 128, 0 };
 }
 
 AWall::~AWall()

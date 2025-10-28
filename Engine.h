@@ -1,20 +1,26 @@
 #pragma once
 
+#include <SDL3/SDL.h>
+
+#pragma comment(lib, "SDL3")
+
 class UWorld;
 
 class FEngine
 {
 protected:
 	FEngine();
-
-
+	
 public:
+	
 	virtual ~FEngine();
 
 	//virtual: 니 엔진 만들 때 가져다 쓰셈
 	virtual void Init();	//초기화
 	virtual void Run();		//실행
 	virtual void Term();	//종료
+
+	void OpenLevel();
 
 	//__forceinline: 헤더파일에서만 사용
 	__forceinline UWorld* GetWorld() const
@@ -48,8 +54,17 @@ public:
 		return Instance;
 	}
 
+	SDL_Window* MyWindow;
+	SDL_Renderer* MyRenderer;
+	SDL_Event MyEvent;
+
+	double GetWorldDeltaSeconds() const;
+
 protected:
 	static FEngine* Instance;
+	SDL_Time DeltaSeconds;
+
+	class UTimer* Timer = nullptr;
 };
 
 //extern FEngine* GEngine;

@@ -1,7 +1,8 @@
+#include "Actor.h"
+#include "Engine.h"
+
 #include <iostream>
 #include <windows.h>
-
-#include "Actor.h"
 
 using namespace std;
 
@@ -30,15 +31,35 @@ void AActor::Render()
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Position);
 	
 	std::cout << Shape;
+
+	SDL_SetRenderDrawColor(GEngine->MyRenderer, Color.r, Color.g, Color.b, Color.a);
+	//SDL_RenderDrawPoint(GEngine->MyRenderer, Position.X, Position.Y);
+
+	int SizeX = 30;
+	int SizeY = 30;
+
+	SDL_FRect DrawRect =
+	{
+		(float)(Location.X * SizeX),
+		(float)(Location.Y * SizeY),
+		(float)SizeX,
+		(float)SizeY
+	};
+	SDL_RenderFillRect(GEngine->MyRenderer, &DrawRect);
 }
 
-bool AActor::CheckColision(const AActor* Other)
+bool AActor::CheckCollision(const AActor* Other)
 {
 	if (Other->bIsOverlap)
 	{
-		return true;
+		return false;
 	}
 
+	if (this != Other && Other->bIsCollision && bIsCollision &&
+		this->Location == Other->Location) //영역 계산
+	{
+		return true;
+	}
 
 	return false;
 }

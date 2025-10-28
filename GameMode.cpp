@@ -8,7 +8,7 @@
 
 AGameMode::AGameMode()
 {
-	bIsColision = false;
+	bIsCollision = false;
 	bIsOverlap = false;
 }
 
