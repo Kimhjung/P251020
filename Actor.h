@@ -1,9 +1,7 @@
 #pragma once
 
-#include <vector>
 #include "Vector.h"
-#include "SDL3/SDL.h"
-#include "Component.h"
+#include <vector>
 
 class UComponent;
 
@@ -13,12 +11,10 @@ public:
 	AActor();
 	virtual ~AActor();
 
-	//virtual function table => vftbl
-	virtual void Tick();	// virtual: 자식이 재정의할수도 있어. List 찾아봐
-	virtual void Render();
+	//virtual function table ->vftbl
+	//override
+	virtual void Tick(); //이건 자식이 재정의 할수도 있다.
 
-	//inline: 메모리를 갖다 붙임
-	//__forceinline: 
 	__forceinline FVector2D GetActorLocation() const
 	{
 		return Location;
@@ -26,28 +22,42 @@ public:
 
 	void SetActorLocation(FVector2D Value)
 	{
-		// 복사 생성자(될수도, 안될수도)
 		//Location = Value;
-
 		Location.X = Value.X;
 		Location.Y = Value.Y;
-
 	}
-	//virtual void SimulatePhysics();
-	bool CheckCollision(const AActor* Other);
+
+	template<typename T>
+	T* GetComponent()
+	{
+		for (auto Component : Components)
+		{
+			if (dynamic_cast<T*>(Component))
+			{
+				return dynamic_cast<T*>(Component);
+			}
+		}
+
+		return nullptr;
+	}
+
+
 
 	virtual void ActorBeginOverlap();
 	virtual void Hit();
 
-	void AddComponent(UComponent* InComponent);
+	void SetupAttachment(UComponent* InComponent);
 
 	std::vector<class UComponent*> Components;
 
 protected:
 	FVector2D Location;
 
+
+
+
 public:
-	bool bIsCollision = false;
-	bool bIsOverlap = true;
+
+
 };
 

@@ -2,6 +2,8 @@
 #include "SceneComponent.h"
 #include "SDL3/SDL.h"
 
+#include "string.h"
+
 class UPaperFilpbookComponent : public USceneComponent
 {
 public:
@@ -26,11 +28,14 @@ public:
 		return ZOrder;
 	}
 
-	char Shape;
+	void LoadBMP(std::string Filename);
+
 	int ZOrder;
 
 	SDL_Color Color = { 255, 255, 255, 255 };
+	SDL_Surface* BitmapImage = nullptr;
+	SDL_Texture* Texture = nullptr;
 
 protected:
-	
+	char Shape;
 };
